@@ -9,11 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var checkAmount = 0.0
-    @State private var numberOfPeople = 2
+    @State private var numberOfPeople = 0
     @State private var tipPercentage = 20
     
     let currency = Locale.current.currencyCode ?? "USD"
     let tipPercentages = [10, 15, 20, 25, 0]
+    
+    var totalAmountToPay: Double {
+        let totalPerson = Double(numberOfPeople + 2)
+        return (checkAmount + tipValue) / totalPerson
+    }
+    
+    var tipValue: Double {
+        checkAmount * Double(tipPercentage) / 100.0
+    }
     
     var body: some View {
         NavigationView {
@@ -39,7 +48,7 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Text(checkAmount, format: .currency(code: currency))
+                    Text(totalAmountToPay, format: .currency(code: currency))
                 }
             }.navigationTitle("WeSplit")
         }
